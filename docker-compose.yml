@@ -1,18 +1,18 @@
-# Docker Compose pour l'API Bancaire Tunisienne
-version: '3.8'
+# Docker Compose for Tunisian Banking API
+# SECURE: Uses environment variables from .env file
 
 services:
-  # Base de données PostgreSQL
+  # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
     container_name: postgres-bank-tunisia
     environment:
-      POSTGRES_USER: bankgo
-      POSTGRES_PASSWORD: testbank
-      POSTGRES_DB: bankdb_tunisia
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
       POSTGRES_INITDB_ARGS: '--encoding=UTF8 --lc-collate=C --lc-ctype=C'
     ports:
-      - '5434:5432'
+      - '${DB_PORT:-5434}:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -20,37 +20,39 @@ services:
       - bank-network
     restart: unless-stopped
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U bankgo -d bankdb_tunisia']
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER} -d ${DB_NAME}']
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # Application Go
+  # Go Application
   bank-api:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: bank-api-tunisia
     environment:
-      # Configuration base de données
+      # Database configuration - Uses environment variables
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_USER: bankgo
-      DB_PASSWORD: testbank
-      DB_NAME: bankdb_tunisia
-      DB_SSLMODE: disable
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_SSLMODE: ${DB_SSLMODE:-disable}
 
-      # Configuration application
-      PORT: 8080
-      JWT_SECRET: 'votre_cle_jwt_secrete_pour_banque_tunisienne_2024'
-      GIN_MODE: release
+      # Secure application configuration
+      PORT: ${PORT:-8080}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-24h}
+      JWT_ISSUER: ${JWT_ISSUER:-banque-tunisia-api}
+      GIN_MODE: ${GIN_MODE:-release}
 
-      # Configuration bancaire tunisienne
+      # Tunisian banking configuration
       BANK_COUNTRY: TN
       DEFAULT_CURRENCY: TND
       SUPPORTED_CURRENCIES: 'TND,EUR,USD'
     ports:
-      - '8080:8080'
+      - '${PORT:-8080}:8080'
     depends_on:
       postgres:
         condition: service_healthy
@@ -67,13 +69,13 @@ services:
       timeout: 10s
       retries: 3
 
-  # Interface d'administration PostgreSQL (optionnel)
+  # PostgreSQL Admin Interface (development only)
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: pgadmin-bank-tunisia
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@banque-tunisia.tn
-      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     ports:
       - '5050:80'
@@ -84,6 +86,8 @@ services:
     restart: unless-stopped
     volumes:
       - pgadmin_data:/var/lib/pgadmin
+    profiles:
+      - dev
 
 networks:
   bank-network:

@@ -1,5 +1,5 @@
 # Dockerfile pour l'API Bancaire Tunisienne
-FROM golang:1.23-alpine AS builder
+FROM golang:1.24-alpine AS builder
 
 # Installer les dépendances système nécessaires
 RUN apk add --no-cache git ca-certificates tzdata

@@ -37,28 +37,30 @@ clean:
 
 # Docker commands
 docker-build:
-	@echo "Building Docker image..."
+	@echo "🐳 Building Docker image..."
 	@docker build -t bank-api-tunisia .
 
 docker-run:
-	@echo "Starting application with Docker Compose..."
+	@echo "🚀 Starting application with Docker Compose..."
+	@if not exist .env (echo ❌ .env file not found! Copy .env.example to .env and configure it. && exit 1)
 	@docker-compose up -d
 
 docker-dev:
-	@echo "Starting application in development mode with Docker Compose..."
-	@docker-compose up
+	@echo "🔧 Starting application in development mode with Docker Compose..."
+	@if not exist .env (echo ❌ .env file not found! Copy .env.example to .env and configure it. && exit 1)
+	@docker-compose --profile dev up
 
 docker-stop:
-	@echo "Stopping Docker containers..."
+	@echo "🛑 Stopping Docker containers..."
 	@docker-compose down
 
 docker-clean:
-	@echo "Cleaning Docker containers and volumes..."
+	@echo "🧹 Cleaning Docker containers and volumes..."
 	@docker-compose down -v --remove-orphans
-	@docker image rm bank-api-tunisia 2>/dev/null || true
+	@docker image rm bank-api-tunisia 2>nul || echo Image removed or not found
 
 docker-logs:
-	@echo "Showing application logs..."
+	@echo "📋 Showing application logs..."
 	@docker-compose logs -f bank-api
 
 # Show available commands

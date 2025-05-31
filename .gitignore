@@ -1,1 +1,51 @@
-bin
+# Binaries
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+
+# Go build artifacts
+*.o
+*.a
+*.so
+
+# Environment files - NEVER commit these!
+.env
+.env.local
+.env.production
+.env.staging
+.env.development
+
+# Sensitive configuration files
+config.local.json
+secrets.json
+*.key
+*.pem
+*.crt
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Docker volumes data
+postgres_data/
+pgadmin_data/

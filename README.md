@@ -64,24 +64,32 @@ A modern, secure banking API built with Go that follows Tunisian banking standar
 
 3. **⚙️ Set up environment variables**
 
-   Create a `.env` file or set environment variables:
+   **CRITICAL: Copy and configure environment file:**
+
+   ```bash
+   # Copy the example file
+   copy .env.example .env
+
+   # Edit .env with your SECURE values
+   # ⚠️  NEVER use the example values in production!
+   ```
+
+   **Required secure configuration in `.env`:**
 
    ```env
-   # Server Configuration
-   PORT=8080
-   SERVER_HOST=0.0.0.0
+   # IMPORTANT: Generate secure values for production!
 
-   # Database Configuration
-   DB_HOST=localhost
-   DB_PORT=5433
-   DB_USER=bankgo
-   DB_PASSWORD=testbank
-   DB_NAME=bankdb_tunisia
-   DB_SSLMODE=disable
+   # Database - Use strong credentials
+   DB_USER=your_secure_db_user
+   DB_PASSWORD=your_very_secure_password_min_16_chars
+   DB_NAME=your_database_name
 
-   # JWT Configuration   JWT_SECRET=your_secure_jwt_secret_key_for_tunisian_bank_2024
-   JWT_EXPIRES_IN=24h
-   JWT_ISSUER=tunisian-bank-api
+   # JWT - Generate with: openssl rand -hex 32
+   JWT_SECRET=your_32_char_minimum_secure_jwt_secret
+
+   # PgAdmin (dev only)
+   PGADMIN_DEFAULT_EMAIL=admin@your-company.local
+   PGADMIN_DEFAULT_PASSWORD=your_secure_pgadmin_password
    ```
 
 4. **🗄️ Start PostgreSQL database**
@@ -89,11 +97,12 @@ A modern, secure banking API built with Go that follows Tunisian banking standar
    You can use Docker to run PostgreSQL:
 
    ```bash
-   docker run --name postgres-bank \
-     -e POSTGRES_USER=bankgo \
-     -e POSTGRES_PASSWORD=testbank \
-     -e POSTGRES_DB=bankdb_tunisia \
-     -p 5433:5432 \
+   # Uses environment variables from .env file
+   docker run --name postgres-bank `
+     -e POSTGRES_USER=$env:DB_USER `
+     -e POSTGRES_PASSWORD=$env:DB_PASSWORD `
+     -e POSTGRES_DB=$env:DB_NAME `
+     -p 5434:5432 `
      -d postgres:15-alpine
    ```
 
@@ -159,11 +168,11 @@ A modern, secure banking API built with Go that follows Tunisian banking standar
 
 The Docker Compose setup starts these services:
 
-- **🏦 bank-api**: Main API on port `8080`
-- **🐘 postgres**: PostgreSQL database on port `5434`
-- **🔧 pgadmin**: PostgreSQL admin interface on port `5050`
-  - Email: `admin@tunisian-bank.tn`
-  - Password: `admin123`
+- **🏦 bank-api**: Main API on configured port (default: 8080)
+- **🐘 postgres**: PostgreSQL database on configured port (default: 5434)
+- **🔧 pgadmin**: PostgreSQL admin interface (development profile only)
+  - Access via your configured credentials in `.env` file
+  - URL: `http://localhost:5050`
 
 ### 🔨 Building for Production
 
