@@ -1,31 +1,66 @@
 package main
 
 import (
-	"fmt"
 	"math/rand"
+	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
+
+
+
+type LoginRequest struct {
+	Number   int64  `json:"number"`
+	Password  string `json:"password"`
+}
+
+type LoginResponse struct {
+	Number   int64  `json:"number"`
+	Token    string `json:"token"`
+}
+
+type TransferRequest struct {
+	toAccount   int `json:"toAccount"`
+	Amount      int64  `json:"amount"`
+}
+
 
 type Account struct {
 	ID        int    `json:"id"`
 	FirstName string `json:"firstName"`
 	LastName  string `json:"lastName"`
-	IBAN      string `json:"iban"`
+	Number    int64  `json:"number"`
+	HashPassword string `json:"-"`
 	Balance   int64  `json:"balance"`
+	CreatedAt time.Time  `json:"createdAt"`
 }
 
-func generateIBAN() string {
-	// Generate a random IBAN for TN (Tunisia)
-	// Format: TN + 2 check digits + 20 digit account number
-	accountNumber := rand.Int63n(1e18) // Generate up to 18-digit number (max for int64)
-	return fmt.Sprintf("TN%02d%020d", rand.Intn(100), accountNumber)
+type createAcccountRequest struct {
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Password  string `json:"password"`
 }
 
 
-func NewAccount(firstName, lastName string) *Account {
+
+
+func (a *Account) validPassword(password string) bool {
+	return bcrypt.CompareHashAndPassword([]byte(a.HashPassword), []byte(password)) == nil
+}
+
+
+func NewAccount(firstName, lastName , password string) (*Account, error) {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	
+	if err != nil {
+		return nil , err 
+	}
+	
 	return &Account{
-		ID:        rand.Intn(1000), // Random ID for demonstration
 		FirstName: firstName,
 		LastName:  lastName,
-		IBAN:      generateIBAN(),
-	}
+		HashPassword: string(hashedPassword),
+		Number:       int64(rand.Intn(1000000)),
+		CreatedAt: time.Now().UTC(),
+	} , nil
 }
