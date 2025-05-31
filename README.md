@@ -1,4 +1,4 @@
-# 🏦 Tunisian Bank API
+# 🏦 Bank API
 
 A modern, secure banking API built with Go that follows Tunisian banking standards and regulations.
 
