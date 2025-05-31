@@ -1,27 +1,28 @@
-# API Examples - Banque Tunisienne
+# 🏦 API Examples - Tunisian Bank API
 
-Ce fichier contient des exemples complets JSON pour tester tous les endpoints de l'API bancaire tunisienne avec Postman ou autres outils de test.
+This file contains complete JSON examples for testing all endpoints of the Tunisian Banking API with Postman or other testing tools.
 
-## Configuration Postman
+## 🔧 Postman Configuration
 
 **Base URL:** `http://localhost:8080`
 
-## 1. Health Check
+## 1. 💓 Health Check
 
-**Endpoint:** `GET /health`
+**Endpoint:** `GET /api/v1/health`
 
-**Réponse attendue:**
+**Expected Response:**
 
 ```json
 {
   "status": "OK",
-  "message": "Bank API is running"
+  "message": "Bank API is running",
+  "timestamp": "2025-01-31T06:15:30Z"
 }
 ```
 
-## 2. Créer un Compte
+## 2. 📝 Create Account
 
-**Endpoint:** `POST /api/accounts`
+**Endpoint:** `POST /api/v1/accounts`
 
 **Headers:**
 
@@ -29,58 +30,73 @@ Ce fichier contient des exemples complets JSON pour tester tous les endpoints de
 Content-Type: application/json
 ```
 
-**Corps de requête - Compte Courant:**
+**Request Body - Checking Account:**
 
 ```json
 {
   "first_name": "Mohamed",
   "last_name": "Ben Ahmed",
-  "email": "mohamed.benahmed@email.tn",
-  "phone": "+21625123456",
-  "address": "15 Avenue Habib Bourguiba, Tunis",
-  "date_of_birth": "1990-05-15",
-  "password": "motdepasse123",
-  "account_type": "COMPTE_COURANT",
+  "email": "mohamed.benahmed@example.tn",
+  "phone": "+21612345678",
+  "date_of_birth": "1990-01-15T00:00:00Z",
+  "password": "securepassword123",
+  "account_type": "CHECKING",
   "currency": "TND",
-  "initial_balance": 1500000
+  "address": {
+    "street": "Avenue Habib Bourguiba 123",
+    "city": "Tunis",
+    "postal_code": "1001",
+    "country": "Tunisia",
+    "state": "Tunis"
+  }
 }
 ```
 
-**Corps de requête - Compte Épargne:**
+**Request Body - Savings Account:**
 
 ```json
 {
   "first_name": "Fatma",
   "last_name": "Karray",
-  "email": "fatma.karray@banque.tn",
+  "email": "fatma.karray@example.tn",
   "phone": "+21698765432",
-  "address": "22 Rue de la République, Sfax",
-  "date_of_birth": "1985-03-20",
-  "password": "motdepasse456",
-  "account_type": "COMPTE_EPARGNE",
+  "date_of_birth": "1985-03-20T00:00:00Z",
+  "password": "securepassword456",
+  "account_type": "SAVINGS",
   "currency": "TND",
-  "initial_balance": 5000000
+  "address": {
+    "street": "Rue de la République 22",
+    "city": "Sfax",
+    "postal_code": "3000",
+    "country": "Tunisia",
+    "state": "Sfax"
+  }
 }
 ```
 
-**Corps de requête - Compte Entreprise:**
+**Request Body - Business Account:**
 
 ```json
 {
   "first_name": "Ahmed",
   "last_name": "Trabelsi",
-  "email": "ahmed.trabelsi@entreprise.tn",
+  "email": "ahmed.trabelsi@business.tn",
   "phone": "+21655444333",
-  "address": "Boulevard de l'Environnement, Sousse",
-  "date_of_birth": "1978-11-10",
-  "password": "motdepasse789",
-  "account_type": "COMPTE_ENTREPRISE",
+  "date_of_birth": "1978-11-10T00:00:00Z",
+  "password": "securepassword789",
+  "account_type": "BUSINESS",
   "currency": "EUR",
-  "initial_balance": 10000000
+  "address": {
+    "street": "Boulevard de l'Environnement 45",
+    "city": "Sousse",
+    "postal_code": "4000",
+    "country": "Tunisia",
+    "state": "Sousse"
+  }
 }
 ```
 
-**Corps de requête - Compte Devises (USD):**
+**Request Body - Foreign Currency Account (USD):**
 
 ```json
 {
@@ -88,297 +104,620 @@ Content-Type: application/json
   "last_name": "Mansouri",
   "email": "leila.mansouri@international.tn",
   "phone": "+21622111999",
-  "address": "Zone Industrielle, Monastir",
-  "date_of_birth": "1992-08-05",
-  "password": "motdepasse321",
-  "account_type": "COMPTE_DEVISES",
+  "date_of_birth": "1992-08-05T00:00:00Z",
+  "password": "securepassword321",
+  "account_type": "FOREIGN_CURRENCY",
   "currency": "USD",
-  "initial_balance": 2000000
-}
-```
-
-**Réponse attendue:**
-
-```json
-{
-  "id": 1,
-  "account_number": "TN5901234567890123456789",
-  "first_name": "Mohamed",
-  "last_name": "Ben Ahmed",
-  "email": "mohamed.benahmed@email.tn",
-  "phone": "+21625123456",
-  "address": "15 Avenue Habib Bourguiba, Tunis",
-  "date_of_birth": "1990-05-15T00:00:00Z",
-  "balance": 1500000,
-  "currency": "TND",
-  "account_type": "COMPTE_COURANT",
-  "status": "ACTIF",
-  "iban": "TN5901234567890123456789",
-  "bic": "STBKTNTT",
-  "created_at": "2024-01-15T10:30:00Z",
-  "updated_at": "2024-01-15T10:30:00Z"
-}
-```
-
-## 3. Connexion (Login)
-
-**Endpoint:** `POST /api/login`
-
-**Headers:**
-
-```
-Content-Type: application/json
-```
-
-**Corps de requête:**
-
-```json
-{
-  "account_number": "TN5901234567890123456789",
-  "password": "motdepasse123"
-}
-```
-
-**Réponse attendue:**
-
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "user": {
-    "id": 1,
-    "account_number": "TN5901234567890123456789",
-    "first_name": "Mohamed",
-    "last_name": "Ben Ahmed",
-    "email": "mohamed.benahmed@email.tn",
-    "balance": 1500000,
-    "currency": "TND",
-    "account_type": "COMPTE_COURANT"
+  "address": {
+    "street": "Zone Industrielle 15",
+    "city": "Monastir",
+    "postal_code": "5000",
+    "country": "Tunisia",
+    "state": "Monastir"
   }
 }
 ```
 
-## 4. Virement (Transfer)
+**Expected Response:**
 
-**Endpoint:** `POST /api/transfer`
+```json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "customer_id": 1,
+    "account_number": "TN5961705312451143542106",
+    "iban": "TN5961705312451143542106",
+    "bic": "STBKTNTT",
+    "account_type": "CHECKING",
+    "currency": "TND",
+    "balance": 0,
+    "status": "ACTIVE",
+    "created_at": "2025-01-31T06:15:30Z",
+    "updated_at": "2025-01-31T06:15:30Z"
+  },
+  "message": "Account created successfully",
+  "timestamp": "2025-01-31T06:15:30Z"
+}
+```
+
+## 3. 🔐 Authentication (Login)
+
+**Endpoint:** `POST /api/v1/auth/login`
 
 **Headers:**
 
 ```
 Content-Type: application/json
-Authorization: Bearer {votre_token_jwt}
 ```
 
-**Corps de requête - Virement TND:**
+**Request Body:**
 
 ```json
 {
-  "from_account": "TN5901234567890123456789",
-  "to_account": "TN5998765432109876543210",
-  "amount": 250000,
-  "currency": "TND",
-  "description": "Paiement facture électricité STEG"
+  "account_number": "TN5961705312451143542106",
+  "password": "securepassword123"
 }
 ```
 
-**Corps de requête - Virement EUR:**
+**Expected Response:**
+
+````json
+{
+  "success": true,
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "expires_in": 86400,
+    "account": {
+      "id": 1,
+      "customer_id": 1,
+      "account_number": "TN5961705312451143542106",
+      "account_type": "CHECKING",
+      "currency": "TND",
+      "status": "ACTIVE"
+    }
+  },
+  "message": "Login successful",
+  "timestamp": "2025-01-31T06:15:30Z"
+}
+```## 4. 🔄 Refresh Token
+
+**Endpoint:** `POST /api/v1/auth/refresh`
+
+**Headers:**
+
+````
+
+Authorization: Bearer {your_current_jwt_token}
+
+````
+
+**Expected Response:**
 
 ```json
 {
-  "from_account": "TN5912345678901234567890",
-  "to_account": "TN5987654321098765432109",
-  "amount": 500000,
-  "currency": "EUR",
-  "description": "Transfert vers compte épargne"
+  "success": true,
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "expires_in": 86400
+  },
+  "message": "Token refreshed successfully",
+  "timestamp": "2025-01-31T06:15:30Z"
 }
-```
+````
 
-**Corps de requête - Virement USD:**
+## 5. 🚪 Logout
 
-```json
-{
-  "from_account": "TN5923456789012345678901",
-  "to_account": "TN5976543210987654321098",
-  "amount": 1000000,
-  "currency": "USD",
-  "description": "Paiement fournisseur international"
-}
-```
-
-**Réponse attendue:**
-
-```json
-{
-  "id": 1,
-  "from_account_id": 1,
-  "to_account_id": 2,
-  "amount": 250000,
-  "currency": "TND",
-  "description": "Paiement facture électricité STEG",
-  "status": "RÉUSSI",
-  "transaction_type": "VIREMENT",
-  "created_at": "2024-01-15T14:25:30Z"
-}
-```
-
-## 5. Historique des Transactions
-
-**Endpoint:** `GET /api/transactions/{account_number}`
+**Endpoint:** `POST /api/v1/auth/logout`
 
 **Headers:**
 
 ```
-Authorization: Bearer {votre_token_jwt}
+Authorization: Bearer {your_jwt_token}
 ```
 
-**Exemple d'URL:**
-
-```
-GET /api/transactions/TN5901234567890123456789
-```
-
-**Réponse attendue:**
+**Expected Response:**
 
 ```json
-[
-  {
+{
+  "success": true,
+  "message": "Logout successful",
+  "timestamp": "2025-01-31T06:15:30Z"
+}
+```
+
+## 6. 💸 Transfer Money
+
+**Endpoint:** `POST /api/v1/transactions/transfer`
+
+**Headers:**
+
+```
+Content-Type: application/json
+Authorization: Bearer {your_jwt_token}
+```
+
+**Request Body - TND Transfer:**
+
+```json
+{
+  "from_account_number": "TN5961705312451143542106",
+  "to_account_number": "TN5959238705041140193701",
+  "amount": 25000,
+  "currency": "TND",
+  "description": "Electricity bill payment STEG",
+  "reference": "TXN-2025-001"
+}
+```
+
+**Request Body - EUR Transfer:**
+
+```json
+{
+  "from_account_number": "TN5961705312451143542106",
+  "to_account_number": "TN5959238705041140193701",
+  "amount": 500,
+  "currency": "EUR",
+  "description": "Transfer to savings account",
+  "reference": "TXN-2025-002"
+}
+```
+
+**Request Body - USD Transfer:**
+
+```json
+{
+  "from_account_number": "TN5961705312451143542106",
+  "to_account_number": "TN5959238705041140193701",
+  "amount": 1000,
+  "currency": "USD",
+  "description": "International supplier payment",
+  "reference": "TXN-2025-003"
+}
+```
+
+**Expected Response:**
+
+```json
+{
+  "success": true,
+  "data": {
     "id": 1,
     "from_account_id": 1,
     "to_account_id": 2,
-    "amount": 250000,
+    "from_account_number": "TN5961705312451143542106",
+    "to_account_number": "TN5959238705041140193701",
+    "amount": 25000,
     "currency": "TND",
-    "description": "Paiement facture électricité STEG",
-    "status": "RÉUSSI",
-    "transaction_type": "VIREMENT",
-    "created_at": "2024-01-15T14:25:30Z"
+    "description": "Electricity bill payment STEG",
+    "reference": "TXN-2025-001",
+    "transaction_type": "TRANSFER",
+    "status": "COMPLETED",
+    "fee": 500,
+    "exchange_rate": 1.0,
+    "created_at": "2025-01-31T06:15:30Z"
   },
-  {
+  "message": "Transfer completed successfully",
+  "timestamp": "2025-01-31T06:15:30Z"
+}
+```
+
+## 7. 📥 Deposit Money
+
+**Endpoint:** `POST /api/v1/transactions/deposit`
+
+**Headers:**
+
+```
+Content-Type: application/json
+Authorization: Bearer {your_jwt_token}
+```
+
+**Request Body:**
+
+```json
+{
+  "account_number": "TN5961705312451143542106",
+  "amount": 100000,
+  "currency": "TND",
+  "description": "Cash deposit"
+}
+```
+
+**Expected Response:**
+
+```json
+{
+  "success": true,
+  "data": {
     "id": 2,
-    "from_account_id": 2,
-    "to_account_id": 1,
+    "account_id": 1,
+    "account_number": "TN5961705312451143542106",
     "amount": 100000,
     "currency": "TND",
-    "description": "Remboursement prêt personnel",
-    "status": "RÉUSSI",
-    "transaction_type": "VIREMENT",
-    "created_at": "2024-01-14T09:15:45Z"
+    "description": "Cash deposit",
+    "transaction_type": "DEPOSIT",
+    "status": "COMPLETED",
+    "fee": 0,
+    "created_at": "2025-01-31T06:15:30Z"
+  },
+  "message": "Deposit completed successfully",
+  "timestamp": "2025-01-31T06:15:30Z"
+}
+```
+
+## 8. 📤 Withdraw Money
+
+**Endpoint:** `POST /api/v1/transactions/withdraw`
+
+**Headers:**
+
+```
+Content-Type: application/json
+Authorization: Bearer {your_jwt_token}
+```
+
+**Request Body:**
+
+```json
+{
+  "account_number": "TN5961705312451143542106",
+  "amount": 10000,
+  "currency": "TND",
+  "description": "ATM withdrawal"
+}
+```
+
+**Expected Response:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": 3,
+    "account_id": 1,
+    "account_number": "TN5961705312451143542106",
+    "amount": 10000,
+    "currency": "TND",
+    "description": "ATM withdrawal",
+    "transaction_type": "WITHDRAWAL",
+    "status": "COMPLETED",
+    "fee": 200,
+    "created_at": "2025-01-31T06:15:30Z"
+  },
+  "message": "Withdrawal completed successfully",
+  "timestamp": "2025-01-31T06:15:30Z"
+}
+```
+
+## 9. 💰 Get Account Balance
+
+**Endpoint:** `GET /api/v1/accounts/{account_number}/balance`
+
+**Headers:**
+
+```
+Authorization: Bearer {your_jwt_token}
+```
+
+**Example URL:**
+
+```
+GET /api/v1/accounts/TN5961705312451143542106/balance
+```
+
+**Expected Response:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "account_number": "TN5961705312451143542106",
+    "balance": 114300,
+    "currency": "TND",
+    "available_balance": 114300,
+    "pending_balance": 0
+  },
+  "message": "Balance retrieved successfully",
+  "timestamp": "2025-01-31T06:15:30Z"
+}
+```
+
+## 10. 📋 Transaction History
+
+**Endpoint:** `GET /api/v1/transactions/account/{account_id}`
+
+**Headers:**
+
+```
+Authorization: Bearer {your_jwt_token}
+```
+
+**Example URL:**
+
+```
+GET /api/v1/transactions/account/1?limit=10&offset=0
+```
+
+**Expected Response:**
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "from_account_id": 1,
+      "to_account_id": 2,
+      "from_account_number": "TN5961705312451143542106",
+      "to_account_number": "TN5959238705041140193701",
+      "amount": 25000,
+      "currency": "TND",
+      "description": "Electricity bill payment STEG",
+      "reference": "TXN-2025-001",
+      "transaction_type": "TRANSFER",
+      "status": "COMPLETED",
+      "fee": 500,
+      "created_at": "2025-01-31T06:15:30Z"
+    },
+    {
+      "id": 2,
+      "account_id": 1,
+      "account_number": "TN5961705312451143542106",
+      "amount": 100000,
+      "currency": "TND",
+      "description": "Cash deposit",
+      "transaction_type": "DEPOSIT",
+      "status": "COMPLETED",
+      "fee": 0,
+      "created_at": "2025-01-31T06:10:15Z"
+    }
+  ],
+  "message": "Transaction history retrieved successfully",
+  "timestamp": "2025-01-31T06:15:30Z"
+}
+```
+
+## 11. 👤 Get Account Information
+
+**Endpoint:** `GET /api/v1/accounts/{id}`
+
+**Headers:**
+
+```
+Authorization: Bearer {your_jwt_token}
+```
+
+**Example URL:**
+
+```
+GET /api/v1/accounts/1
+```
+
+**Expected Response:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "customer_id": 1,
+    "account_number": "TN5961705312451143542106",
+    "iban": "TN5961705312451143542106",
+    "bic": "STBKTNTT",
+    "account_type": "CHECKING",
+    "currency": "TND",
+    "balance": 114300,
+    "status": "ACTIVE",
+    "created_at": "2025-01-31T06:00:00Z",
+    "updated_at": "2025-01-31T06:15:30Z",
+    "customer": {
+      "id": 1,
+      "first_name": "Mohamed",
+      "last_name": "Ben Ahmed",
+      "email": "mohamed.benahmed@example.tn",
+      "phone": "+21612345678",
+      "date_of_birth": "1990-01-15T00:00:00Z",
+      "address": {
+        "street": "Avenue Habib Bourguiba 123",
+        "city": "Tunis",
+        "postal_code": "1001",
+        "country": "Tunisia",
+        "state": "Tunis"
+      }
+    }
+  },
+  "message": "Account information retrieved successfully",
+  "timestamp": "2025-01-31T06:15:30Z"
+}
+```
+
+## 🧪 Complete Testing Scenarios
+
+### Scenario 1: Complete TND Testing
+
+1. **Create first account:**
+
+```json
+POST /api/v1/accounts
+{
+  "first_name": "Sami",
+  "last_name": "Bouazizi",
+  "email": "sami.bouazizi@example.tn",
+  "phone": "+21620123456",
+  "date_of_birth": "1988-12-03T00:00:00Z",
+  "password": "sami2024",
+  "account_type": "CHECKING",
+  "currency": "TND",
+  "address": {
+    "street": "Cité El Khadra",
+    "city": "Tunis",
+    "postal_code": "1001",
+    "country": "Tunisia",
+    "state": "Tunis"
   }
-]
-```
-
-## 6. Scénarios de Test Complets
-
-### Scénario 1: Test complet avec TND
-
-1. **Créer premier compte:**
-
-```json
-POST /api/accounts
-{
-    "first_name": "Sami",
-    "last_name": "Bouazizi",
-    "email": "sami.bouazizi@gmail.tn",
-    "phone": "+21620123456",
-    "address": "Cité El Khadra, Tunis",
-    "date_of_birth": "1988-12-03",
-    "password": "sami2024",
-    "account_type": "COMPTE_COURANT",
-    "currency": "TND",
-    "initial_balance": 2000000
 }
 ```
 
-2. **Créer deuxième compte:**
+2. **Create second account:**
 
 ```json
-POST /api/accounts
+POST /api/v1/accounts
 {
-    "first_name": "Nour",
-    "last_name": "Hamdi",
-    "email": "nour.hamdi@yahoo.tn",
-    "phone": "+21655987654",
-    "address": "Centre Ville, Nabeul",
-    "date_of_birth": "1995-07-18",
-    "password": "nour2024",
-    "account_type": "COMPTE_EPARGNE",
-    "currency": "TND",
-    "initial_balance": 1000000
+  "first_name": "Nour",
+  "last_name": "Hamdi",
+  "email": "nour.hamdi@example.tn",
+  "phone": "+21655987654",
+  "date_of_birth": "1995-07-18T00:00:00Z",
+  "password": "nour2024",
+  "account_type": "SAVINGS",
+  "currency": "TND",
+  "address": {
+    "street": "Centre Ville",
+    "city": "Nabeul",
+    "postal_code": "8000",
+    "country": "Tunisia",
+    "state": "Nabeul"
+  }
 }
 ```
 
-3. **Se connecter avec le premier compte:**
+3. **Login with first account:**
 
 ```json
-POST /api/login
+POST /api/v1/auth/login
 {
-    "account_number": "{numéro_retourné_étape_1}",
-    "password": "sami2024"
+  "account_number": "{account_number_from_step_1}",
+  "password": "sami2024"
 }
 ```
 
-4. **Effectuer un virement:**
+4. **Make a deposit:**
 
 ```json
-POST /api/transfer
+POST /api/v1/transactions/deposit
 {
-    "from_account": "{numéro_compte_sami}",
-    "to_account": "{numéro_compte_nour}",
-    "amount": 300000,
-    "currency": "TND",
-    "description": "Cadeau d'anniversaire"
+  "account_number": "{sami_account_number}",
+  "amount": 200000,
+  "currency": "TND",
+  "description": "Initial deposit"
 }
 ```
 
-5. **Consulter l'historique:**
-
-```
-GET /api/transactions/{numéro_compte_sami}
-```
-
-### Scénario 2: Test avec devises étrangères
-
-1. **Créer compte EUR:**
+5. **Transfer money:**
 
 ```json
-POST /api/accounts
+POST /api/v1/transactions/transfer
 {
-    "first_name": "Karim",
-    "last_name": "Zouari",
-    "email": "karim.zouari@export.tn",
-    "phone": "+21698123456",
-    "address": "Zone Franche, Bizerte",
-    "date_of_birth": "1982-04-25",
-    "password": "karim2024",
-    "account_type": "COMPTE_ENTREPRISE",
-    "currency": "EUR",
-    "initial_balance": 15000000
+  "from_account_number": "{sami_account_number}",
+  "to_account_number": "{nour_account_number}",
+  "amount": 30000,
+  "currency": "TND",
+  "description": "Birthday gift",
+  "reference": "GIFT-001"
 }
 ```
 
-2. **Créer compte USD:**
+6. **Check transaction history:**
+
+```
+GET /api/v1/transactions/account/{sami_account_id}
+```
+
+### Scenario 2: Foreign Currency Testing
+
+1. **Create EUR account:**
 
 ```json
-POST /api/accounts
+POST /api/v1/accounts
 {
-    "first_name": "Olfa",
-    "last_name": "Mejri",
-    "email": "olfa.mejri@trading.tn",
-    "phone": "+21644555666",
-    "address": "La Marsa, Tunis",
-    "date_of_birth": "1990-09-12",
-    "password": "olfa2024",
-    "account_type": "COMPTE_DEVISES",
-    "currency": "USD",
-    "initial_balance": 8000000
+  "first_name": "Karim",
+  "last_name": "Zouari",
+  "email": "karim.zouari@business.tn",
+  "phone": "+21698123456",
+  "date_of_birth": "1982-04-25T00:00:00Z",
+  "password": "karim2024",
+  "account_type": "BUSINESS",
+  "currency": "EUR",
+  "address": {
+    "street": "Zone Franche",
+    "city": "Bizerte",
+    "postal_code": "7000",
+    "country": "Tunisia",
+    "state": "Bizerte"
+  }
 }
 ```
 
-## 7. Codes d'Erreur Courants
+2. **Create USD account:**
+
+```json
+POST /api/v1/accounts
+{
+  "first_name": "Olfa",
+  "last_name": "Mejri",
+  "email": "olfa.mejri@trading.tn",
+  "phone": "+21644555666",
+  "date_of_birth": "1990-09-12T00:00:00Z",
+  "password": "olfa2024",  "account_type": "FOREIGN_CURRENCY",
+  "currency": "USD",
+  "address": {
+    "street": "La Marsa",
+    "city": "Tunis",
+    "postal_code": "2078",
+    "country": "Tunisia",
+    "state": "Tunis"
+  }
+}
+```
+
+3. **Login and make EUR transfer:**
+
+```json
+POST /api/v1/auth/login
+{
+  "account_number": "{karim_account_number}",
+  "password": "karim2024"
+}
+```
+
+4. **Make EUR deposit:**
+
+```json
+POST /api/v1/transactions/deposit
+{
+  "account_number": "{karim_account_number}",
+  "amount": 5000,
+  "currency": "EUR",
+  "description": "Business revenue"
+}
+```
+
+5. **Transfer EUR to USD account:**
+
+```json
+POST /api/v1/transactions/transfer
+{
+  "from_account_number": "{karim_account_number}",
+  "to_account_number": "{olfa_account_number}",
+  "amount": 1000,
+  "currency": "EUR",
+  "description": "International business payment",
+  "reference": "BIZ-EUR-001"
+}
+```
+
+## 🚨 Common Error Codes
 
 **400 Bad Request:**
 
 ```json
 {
-  "error": "Données invalides"
+  "success": false,
+  "error": "Invalid data provided",
+  "timestamp": "2025-01-31T06:15:30Z"
 }
 ```
 
@@ -386,7 +725,19 @@ POST /api/accounts
 
 ```json
 {
-  "error": "Token manquant ou invalide"
+  "success": false,
+  "error": "Missing or invalid token",
+  "timestamp": "2025-01-31T06:15:30Z"
+}
+```
+
+**403 Forbidden:**
+
+```json
+{
+  "success": false,
+  "error": "Insufficient permissions",
+  "timestamp": "2025-01-31T06:15:30Z"
 }
 ```
 
@@ -394,9 +745,104 @@ POST /api/accounts
 
 ```json
 {
-  "error": "Compte non trouvé"
+  "success": false,
+  "error": "Account not found",
+  "timestamp": "2025-01-31T06:15:30Z"
 }
 ```
+
+**409 Conflict:**
+
+```json
+{
+  "success": false,
+  "error": "Account with this email already exists",
+  "timestamp": "2025-01-31T06:15:30Z"
+}
+```
+
+**422 Unprocessable Entity:**
+
+```json
+{
+  "success": false,
+  "error": "Insufficient balance for this transaction",
+  "timestamp": "2025-01-31T06:15:30Z"
+}
+```
+
+**500 Internal Server Error:**
+
+```json
+{
+  "success": false,
+  "error": "Internal server error",
+  "timestamp": "2025-01-31T06:15:30Z"
+}
+```
+
+## 📊 Fee Structure
+
+### Transaction Fees (in millimes):
+
+- **🔄 Transfers (TND)**: 500 millimes (0.5 TND)
+- **🔄 Transfers (EUR)**: 50 euro cents
+- **🔄 Transfers (USD)**: 50 cents
+- **📥 Deposits**: Free
+- **📤 Withdrawals**: 200 millimes (0.2 TND)
+- **💱 Currency Exchange**: 1% of transaction amount
+
+### Account Maintenance Fees:
+
+- **🏦 Checking Account**: Free
+- **💰 Savings Account**: Free
+- **🏢 Business Account**: 5 TND per month
+- **💱 Foreign Currency Account**: 10 TND per month
+
+## 🔐 Security Notes
+
+1. **🔑 JWT Tokens** expire after 24 hours
+2. **🔄 Refresh tokens** can be used to get new access tokens
+3. **🛡️ Passwords** are hashed with bcrypt
+4. **📱 Phone numbers** must be in international format (+216...)
+5. **📧 Email addresses** must be unique across the system
+6. **🏦 Account numbers** follow Tunisian IBAN format (TN59 + 20 digits)
+
+## 🌐 Supported Currencies
+
+- **TND**: Tunisian Dinar (primary currency, millimes precision)
+- **EUR**: Euro (cents precision)
+- **USD**: US Dollar (cents precision)
+
+## 📝 Response Format
+
+All API responses follow this standard format:
+
+```json
+{
+  "success": boolean,
+  "data": object|array|null,
+  "message": string,
+  "error": string|null,
+  "timestamp": string (ISO 8601)
+}
+```
+
+---
+
+**📞 Support**: For API support, contact the development team or check the repository issues.
+
+**🏦 Banking Standards**: This API follows Tunisian Central Bank (BCT) regulations and international banking standards.
+
+````
+
+**404 Not Found:**
+
+```json
+{
+  "error": "Compte non trouvé"
+}
+````
 
 **409 Conflict:**
 

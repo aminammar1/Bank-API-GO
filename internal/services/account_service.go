@@ -177,7 +177,7 @@ func (s *accountService) AuthenticateAccount(accountNumber, password string) (*m
 	if !account.IsActive() {
 		return nil, fmt.Errorf("account is not active")
 	}
-	
+
 	if !account.ValidatePassword(password) {
 		return nil, fmt.Errorf("invalid credentials")
 	}

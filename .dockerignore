@@ -1,0 +1,74 @@
+# Ignorer les fichiers et dossiers suivants lors de la construction Docker
+
+# Fichiers de développement
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Fichiers de base de données locaux
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# Fichiers temporaires
+*.tmp
+*.temp
+.tmp/
+.temp/
+
+# Fichiers de sauvegarde
+*.bak
+*.backup
+
+# Dossiers de build locaux
+bin/
+build/
+dist/
+
+# Fichiers d'IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Documentation de développement
+docs/dev/
+*.md.backup
+
+# Fichiers de test
+coverage.txt
+coverage.html
+*.test
+
+# Certificats et clés
+*.key
+*.pem
+*.crt
+*.p12
+
+# Données de test volumineuses
+testdata/large/
+mock_data/
+
+# Fichiers Docker locaux
+docker-compose.override.yml
+.dockerignore.local
+
+# Cache Go
+go.work
+go.work.sum
+
+# Fichiers de configuration locale
+config.local.yaml
+config.local.json

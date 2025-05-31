@@ -18,7 +18,7 @@ import (
 )
 
 const (
-	testDBName = "bankdb" // Use main database for now
+	testDBName = "bankdb_tunisia" // Updated to match Docker setup
 )
 
 var (
@@ -42,10 +42,9 @@ func TestMain(m *testing.M) {
 
 func setup() {
 	// Load test configuration
-	testConfig = &config.Config{
-		Database: config.DatabaseConfig{
+	testConfig = &config.Config{		Database: config.DatabaseConfig{
 			Host:     "localhost",
-			Port:     "5433",
+			Port:     "5434", // Updated to match Docker port
 			User:     "bankgo",
 			Password: "testbank",
 			DBName:   testDBName,

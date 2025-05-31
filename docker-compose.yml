@@ -1,0 +1,97 @@
+# Docker Compose pour l'API Bancaire Tunisienne
+version: '3.8'
+
+services:
+  # Base de données PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres-bank-tunisia
+    environment:
+      POSTGRES_USER: bankgo
+      POSTGRES_PASSWORD: testbank
+      POSTGRES_DB: bankdb_tunisia
+      POSTGRES_INITDB_ARGS: '--encoding=UTF8 --lc-collate=C --lc-ctype=C'
+    ports:
+      - '5434:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - bank-network
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U bankgo -d bankdb_tunisia']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Application Go
+  bank-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bank-api-tunisia
+    environment:
+      # Configuration base de données
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: bankgo
+      DB_PASSWORD: testbank
+      DB_NAME: bankdb_tunisia
+      DB_SSLMODE: disable
+
+      # Configuration application
+      PORT: 8080
+      JWT_SECRET: 'votre_cle_jwt_secrete_pour_banque_tunisienne_2024'
+      GIN_MODE: release
+
+      # Configuration bancaire tunisienne
+      BANK_COUNTRY: TN
+      DEFAULT_CURRENCY: TND
+      SUPPORTED_CURRENCIES: 'TND,EUR,USD'
+    ports:
+      - '8080:8080'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - bank-network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'wget --no-verbose --tries=1 --spider http://localhost:8080/health || exit 1',
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Interface d'administration PostgreSQL (optionnel)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin-bank-tunisia
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@banque-tunisia.tn
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - '5050:80'
+    depends_on:
+      - postgres
+    networks:
+      - bank-network
+    restart: unless-stopped
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+networks:
+  bank-network:
+    driver: bridge
+    name: bank-tunisia-network
+
+volumes:
+  postgres_data:
+    name: postgres-bank-tunisia-data
+  pgadmin_data:
+    name: pgadmin-bank-tunisia-data

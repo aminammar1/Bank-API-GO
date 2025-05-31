@@ -37,8 +37,8 @@ type JWTConfig struct {
 func Load() *Config {
 	return &Config{
 		Server: ServerConfig{
-			Port:         getEnv("SERVER_PORT", "3000"),
-			Host:         getEnv("SERVER_HOST", "localhost"),
+			Port:         getEnv("PORT", "8080"), // Changed to match Docker
+			Host:         getEnv("SERVER_HOST", "0.0.0.0"), // Changed for Docker
 			ReadTimeout:  getDurationEnv("SERVER_READ_TIMEOUT", 30*time.Second),
 			WriteTimeout: getDurationEnv("SERVER_WRITE_TIMEOUT", 30*time.Second),
 		},
@@ -47,13 +47,13 @@ func Load() *Config {
 			Port:     getEnv("DB_PORT", "5433"),
 			User:     getEnv("DB_USER", "bankgo"),
 			Password: getEnv("DB_PASSWORD", "testbank"),
-			DBName:   getEnv("DB_NAME", "bankdb"),
+			DBName:   getEnv("DB_NAME", "bankdb_tunisia"), // Updated database name
 			SSLMode:  getEnv("DB_SSLMODE", "disable"),
 		},
 		JWT: JWTConfig{
-			Secret:    getEnv("JWT_SECRET", "your-secret-key-change-in-production"),
+			Secret:    getEnv("JWT_SECRET", "votre_cle_jwt_secrete_pour_banque_tunisienne_2024"),
 			ExpiresIn: getDurationEnv("JWT_EXPIRES_IN", 24*time.Hour),
-			Issuer:    getEnv("JWT_ISSUER", "bank-api"),
+			Issuer:    getEnv("JWT_ISSUER", "banque-tunisia-api"),
 		},
 	}
 }

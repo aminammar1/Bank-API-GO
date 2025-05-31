@@ -1,71 +1,77 @@
-# Tunisian Bank API
+# 🏦 Tunisian Bank API
 
-A modern banking API built with Go that follows Tunisian banking standards
+A modern, secure banking API built with Go that follows Tunisian banking standards and regulations.
 
-## Features
+## ✨ Features
 
-### Tunisian Banking Compliance
+### 🇹🇳 Tunisian Banking Compliance
 
-- **Tunisian IBAN** format support (TN59 + 20 digits)
-- **Tunisian BIC** codes (STB, BIAT, BNA, ATB, UBCI)
-- **Tunisian Dinar (TND)** as primary currency with millimes precision
-- Support for EUR/USD foreign currency accounts
-- Tunisian account types following BCT regulations
+- **🏧 Tunisian IBAN** format support (TN59 + 20 digits)
+- **🏛️ Tunisian BIC** codes (STB, BIAT, BNA, ATB, UBCI)
+- **💰 Tunisian Dinar (TND)** as primary currency with millimes precision
+- **💱 Multi-currency** support for EUR/USD foreign currency accounts
+- **📋 Account types** following Central Bank of Tunisia (BCT) regulations
 
-### Security & Authentication
+### 🔐 Security & Authentication
 
-- JWT-based authentication
-- Password hashing with bcrypt
-- Protected endpoints with middleware
-- CORS support
+- **🔑 JWT-based authentication** with secure token management
+- **🛡️ Password hashing** with bcrypt encryption
+- **🚪 Protected endpoints** with middleware authorization
+- **🌐 CORS support** for web applications
+- **⏰ Token refresh** functionality
 
-### Transaction Management
+### 💳 Transaction Management
 
-- Multi-currency support (TND, EUR, USD)
-- Transaction fees calculation
-- Real-time balance updates in millimes
-- Transaction status tracking
-- Comprehensive transaction history
+- **💸 Multi-currency transactions** (TND, EUR, USD)
+- **📊 Automatic fee calculation** based on transaction type
+- **⚡ Real-time balance updates** in millimes precision
+- **📈 Transaction status tracking** (PENDING, COMPLETED, FAILED)
+- **📚 Comprehensive transaction history** with filtering options
 
-### API Design
+### 🔧 API Design
 
-- RESTful API design
-- Proper HTTP status codes
-- Structured JSON responses in French/Arabic context
-- Input validation
-- Error handling with timestamps
+- **🎯 RESTful API design** with clean endpoints
+- **✅ Proper HTTP status codes** for all responses
+- **📝 Structured JSON responses** with consistent format
+- **🔍 Input validation** with detailed error messages
+- **⚠️ Error handling** with timestamps and tracking
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### 📋 Prerequisites
 
-- Go 1.23.0 or higher
-- PostgreSQL database
-- Git
+- **🔧 Go 1.23.0** or higher
+- **🐘 PostgreSQL** database
+- **📦 Git** version control
+- **🐳 Docker & Docker Compose** (for containerized deployment)
 
-### Installation
+### 🛠️ Installation
 
-1. **Clone the repository**
+## Option 1: 🏠 Local Development
+
+1. **📥 Clone the repository**
 
    ```bash
    git clone <repository-url>
    cd bank-api
    ```
 
-2. **Install dependencies**
+2. **📦 Install dependencies**
 
    ```bash
    go mod tidy
    ```
 
-3. **Set up environment variables**
+3. **⚙️ Set up environment variables**
 
    Create a `.env` file or set environment variables:
 
    ```env
    # Server Configuration
-   SERVER_PORT=3000
-   SERVER_HOST=localhost   # Database Configuration
+   PORT=8080
+   SERVER_HOST=0.0.0.0
+
+   # Database Configuration
    DB_HOST=localhost
    DB_PORT=5433
    DB_USER=bankgo
@@ -73,13 +79,12 @@ A modern banking API built with Go that follows Tunisian banking standards
    DB_NAME=bankdb_tunisia
    DB_SSLMODE=disable
 
-   # JWT Configuration
-   JWT_SECRET=your-secret-key-change-in-production
+   # JWT Configuration   JWT_SECRET=your_secure_jwt_secret_key_for_tunisian_bank_2024
    JWT_EXPIRES_IN=24h
-   JWT_ISSUER=tunisia-bank-api
+   JWT_ISSUER=tunisian-bank-api
    ```
 
-4. **Start PostgreSQL database**
+4. **🗄️ Start PostgreSQL database**
 
    You can use Docker to run PostgreSQL:
 
@@ -94,15 +99,73 @@ A modern banking API built with Go that follows Tunisian banking standards
 
    Or make sure PostgreSQL is running with the configured database.
 
-5. **Run the application**
+5. **🚀 Run the application**
 
    ```bash
-   go run cmd/server/main.go
+   make dev
    ```
 
-   The API will be available at `http://localhost:3000`
+   The API will be available at `http://localhost:8080`
 
-### Building for Production
+## Option 2: 🐳 Docker (Recommended)
+
+1. **📥 Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd bank-api
+   ```
+
+2. **🐳 Start with Docker Compose** ```bash
+
+   # Start in background
+
+   make docker-run
+
+   # Or start in development mode (foreground)
+
+   make docker-dev
+
+   ```
+
+   This will:
+   - 🐘 Create and start PostgreSQL with initialization data
+   - 🏗️ Build and start the banking API
+   - 🔧 Optionally start PgAdmin for database administration
+
+   ```
+
+3. **✅ Check status**
+
+   ```bash
+   # View logs
+   make docker-logs
+
+   # Check API health
+   curl http://localhost:8080/api/v1/health
+   ```
+
+4. **🛑 Stop services**
+
+   ```bash
+   # Stop containers
+   make docker-stop
+
+   # Clean everything (removes volumes and data)
+   make docker-clean
+   ```
+
+### 🐳 Docker Services
+
+The Docker Compose setup starts these services:
+
+- **🏦 bank-api**: Main API on port `8080`
+- **🐘 postgres**: PostgreSQL database on port `5434`
+- **🔧 pgadmin**: PostgreSQL admin interface on port `5050`
+  - Email: `admin@tunisian-bank.tn`
+  - Password: `admin123`
+
+### 🔨 Building for Production
 
 ```bash
 go build -o bin/bank-api cmd/server/main.go
@@ -111,13 +174,13 @@ go build -o bin/bank-api cmd/server/main.go
 
 ## 📚 API Documentation
 
-### Base URL
+### 🌐 Base URL
 
 ```
-http://localhost:3000/api/v1
+http://localhost:8080/api/v1
 ```
 
-### Authentication
+### 🔐 Authentication
 
 Most endpoints require JWT authentication. Include the token in the `Authorization` header:
 
@@ -125,22 +188,22 @@ Most endpoints require JWT authentication. Include the token in the `Authorizati
 Authorization: Bearer <your-jwt-token>
 ```
 
-### Endpoints
+### 🛣️ Endpoints
 
-#### Health Check
+#### 💓 Health Check
 
 ```http
-GET /health
+GET /api/v1/health
 ```
 
 Returns the API health status.
 
-#### Authentication
+#### 🔑 Authentication
 
-##### Register Account
+##### 📝 Register Account
 
 ```http
-POST /auth/register
+POST /api/v1/accounts
 Content-Type: application/json
 
 {
@@ -148,9 +211,9 @@ Content-Type: application/json
   "last_name": "Ben Ahmed",
   "email": "mohamed.benahmed@example.tn",
   "phone": "+21612345678",
-  "date_of_birth": "1990-01-15",
-  "password": "motdepasse123",
-  "account_type": "COMPTE_COURANT",
+  "date_of_birth": "1990-01-15T00:00:00Z",
+  "password": "securepassword123",
+  "account_type": "CHECKING",
   "currency": "TND",
   "address": {
     "street": "Avenue Habib Bourguiba 123",
@@ -162,52 +225,66 @@ Content-Type: application/json
 }
 ```
 
-##### Login
+##### 🔐 Login
 
 ```http
-POST /auth/login
+POST /api/v1/auth/login
 Content-Type: application/json
 
 {
   "account_number": "TN59...",
-  "password": "motdepasse123"
+  "password": "securepassword123"
 }
 ```
 
-#### Account Management
-
-##### Get Account by ID
+##### 🔄 Refresh Token
 
 ```http
-GET /accounts/{id}
+POST /api/v1/auth/refresh
 Authorization: Bearer <token>
 ```
 
-##### Get Account by Account Number
+##### 🚪 Logout
 
 ```http
-GET /accounts/number/{account_number}
+POST /api/v1/auth/logout
 Authorization: Bearer <token>
 ```
 
-##### Get Accounts by Customer ID
+#### 🏦 Account Management
+
+##### 👤 Get Account by ID
 
 ```http
-GET /accounts/customer/{customer_id}
+GET /api/v1/accounts/{id}
 Authorization: Bearer <token>
 ```
 
-##### Get All Accounts (Admin)
+##### 🔢 Get Account by Account Number
 
 ```http
-GET /accounts?limit=10&offset=0
+GET /api/v1/accounts/number/{account_number}
 Authorization: Bearer <token>
 ```
 
-##### Update Account
+##### 👥 Get Accounts by Customer ID
 
 ```http
-PUT /accounts/{id}
+GET /api/v1/accounts/customer/{customer_id}
+Authorization: Bearer <token>
+```
+
+##### 📋 Get All Accounts (Admin)
+
+```http
+GET /api/v1/accounts?limit=10&offset=0
+Authorization: Bearer <token>
+```
+
+##### ✏️ Update Account
+
+```http
+PUT /api/v1/accounts/{id}
 Authorization: Bearer <token>
 Content-Type: application/json
 
@@ -223,57 +300,106 @@ Content-Type: application/json
 }
 ```
 
-##### Delete Account
+##### 🗑️ Delete Account
 
 ```http
-DELETE /accounts/{id}
+DELETE /api/v1/accounts/{id}
 Authorization: Bearer <token>
 ```
 
-#### Transaction Management
-
-##### Create Transaction
+##### 💰 Get Account Balance
 
 ```http
-POST /transactions
+GET /api/v1/accounts/{account_number}/balance
+Authorization: Bearer <token>
+```
+
+##### 🔧 Update Account Status
+
+```http
+PATCH /api/v1/accounts/{id}/status
 Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-  "from_account_number": "ACC001234567890",
-  "to_account_number": "ACC987654321098",
-  "amount": 10000,
-  "currency": "USD",
-  "description": "Payment for services",
-  "reference": "INV-2023-001"
+  "status": "ACTIVE"
 }
 ```
 
-##### Get Transaction by ID
+#### 💳 Transaction Management
+
+##### 💸 Transfer Money
 
 ```http
-GET /transactions/{id}
+POST /api/v1/transactions/transfer
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "from_account_number": "TN5961705312451143542106",
+  "to_account_number": "TN5959238705041140193701",
+  "amount": 25000,
+  "currency": "TND",
+  "description": "Transfer to friend",
+  "reference": "TXN-2025-001"
+}
+```
+
+##### 📥 Deposit Money
+
+```http
+POST /api/v1/transactions/deposit
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "account_number": "TN5961705312451143542106",
+  "amount": 100000,
+  "currency": "TND",
+  "description": "Initial deposit"
+}
+```
+
+##### 📤 Withdraw Money
+
+```http
+POST /api/v1/transactions/withdraw
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "account_number": "TN5961705312451143542106",
+  "amount": 10000,
+  "currency": "TND",
+  "description": "ATM withdrawal"
+}
+```
+
+##### 📄 Get Transaction by ID
+
+```http
+GET /api/v1/transactions/{id}
 Authorization: Bearer <token>
 ```
 
-##### Get Account Transactions
+##### 📋 Get Account Transactions
 
 ```http
-GET /transactions/account/{account_id}?limit=10&offset=0
+GET /api/v1/transactions/account/{account_id}?limit=10&offset=0
 Authorization: Bearer <token>
 ```
 
-##### Get All Transactions (Admin)
+##### 📊 Get All Transactions (Admin)
 
 ```http
-GET /transactions?limit=10&offset=0
+GET /api/v1/transactions?limit=10&offset=0
 Authorization: Bearer <token>
 ```
 
-##### Update Transaction Status
+##### 🔄 Update Transaction Status
 
 ```http
-PUT /transactions/{id}/status
+PUT /api/v1/transactions/{id}/status
 Authorization: Bearer <token>
 Content-Type: application/json
 
@@ -307,31 +433,31 @@ Content-Type: application/json
 }
 ```
 
-### Account Types (BCT Compliant)
+### 🏦 Account Types (BCT Compliant)
 
-- `COMPTE_COURANT` - Compte courant (checking account)
-- `COMPTE_EPARGNE` - Compte d'épargne (savings account)
-- `COMPTE_ENTREPRISE` - Compte entreprise (business account)
-- `COMPTE_DEVISES` - Compte en devises (foreign currency account)
+- `CHECKING` - Standard checking account
+- `SAVINGS` - High-yield savings account
+- `BUSINESS` - Business banking account
+- `FOREIGN_CURRENCY` - Multi-currency account (EUR/USD)
 
-### Transaction Types
+### 💳 Transaction Types
 
-- `TRANSFER` - Virement entre comptes
-- `DEPOSIT` - Dépôt sur compte
-- `WITHDRAWAL` - Retrait du compte
-- `PAYMENT` - Paiement
+- `TRANSFER` - Transfer between accounts
+- `DEPOSIT` - Account deposit
+- `WITHDRAWAL` - Account withdrawal
+- `PAYMENT` - Payment transaction
 
-### Transaction Status
+### 📊 Transaction Status
 
-- `PENDING` - En attente de traitement
-- `COMPLETED` - Transaction terminée avec succès
-- `FAILED` - Échec de la transaction
+- `PENDING` - Awaiting processing
+- `COMPLETED` - Successfully completed transaction
+- `FAILED` - Failed transaction
 
-### Supported Currencies
+### 💰 Supported Currencies
 
-- `TND` - Dinar Tunisien (currency principale)
-- `EUR` - Euro (comptes en devises)
-- `USD` - Dollar Américain (comptes en devises)
+- `TND` - Tunisian Dinar (primary currency)
+- `EUR` - Euro (foreign currency accounts)
+- `USD` - US Dollar (foreign currency accounts)
 
 ## 🧪 Testing
 
@@ -425,7 +551,7 @@ The application uses environment variables for configuration:
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License .
 
 ## 🆘 Support
 
@@ -433,4 +559,4 @@ For support and questions, please open an issue in the repository.
 
 ---
 
-**Built with ❤️ using Go and following international banking standards**
+**Built by Mohamed Amine Ammar with ❤️ using Go and following international banking standards**
