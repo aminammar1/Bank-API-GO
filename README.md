@@ -501,8 +501,7 @@ bank-api/
 │   ├── repository/              # Data access layer
 │   ├── services/                # Business logic layer
 │   └── utils/                   # Utility functions
-├── tests/                       # Comprehensive test suite
-├── old_files/                   # Legacy files (for reference)
+├── tests/                       # Comprehensive test suite          
 └── README.md                    # This file
 ```
 
